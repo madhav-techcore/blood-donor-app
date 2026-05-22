@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login to Blood Rescue App - Connect donors with those in need">
+    <title>Login - Blood Rescue App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #0d0d0d;
+            animation: none;
+        }
+        body::before, body::after { display: none; }
+
+        /* ── Left panel ── */
+        .auth-left {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .auth-left img.hero-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .auth-left-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(10,0,0,0.15) 0%,
+                rgba(139,0,0,0.45) 65%,
+                rgba(80,0,0,0.92) 100%
+            );
+        }
+
+        .auth-left-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+            padding: 40px 36px;
+        }
+
+        .auth-left-content .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 18px;
+        }
+
+        .brand-dot {
+            width: 10px; height: 10px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%,100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.6; }
+        }
+
+        .auth-left-content h2 {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .auth-left-content h2 span { color: #ff6b8a; }
+
+        .auth-left-content p {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 28px;
+            justify-content: center;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            text-align: center;
+        }
+
+        .stat-pill strong {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ff6b8a;
+        }
+
+        .stat-pill span {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.65);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── Right panel ── */
+        .auth-right {
+            width: min(480px, 100%);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 40px;
+        }
+
+        .auth-form-wrap {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 36px;
+        }
+
+        .auth-logo svg { width: 36px; height: 36px; }
+
+        .auth-logo-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .auth-logo-text span { color: #e63950; }
+
+        .auth-form-wrap h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 6px;
+            letter-spacing: -0.02em;
+        }
+
+        .auth-form-wrap .subtitle {
+            font-size: 0.9rem;
+            color: #7a7a7a;
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 7px;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid #e2e2e2;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            color: #111;
+            background: #fafafa;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #e63950;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(230, 57, 80, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            background: linear-gradient(135deg, #e63950 0%, #c0213a 100%);
+            cursor: pointer;
+            margin-top: 8px;
+            letter-spacing: 0.02em;
+            transition: transform 0.18s, box-shadow 0.18s;
+            box-shadow: 0 6px 20px rgba(230, 57, 80, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(230, 57, 80, 0.38);
+        }
+
+        .btn-primary:active { transform: translateY(0); }
+
+        .error-msg {
+            background: rgba(230,57,80,0.08);
+            border: 1px solid rgba(230,57,80,0.3);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #c0213a;
+            font-size: 0.87rem;
+            font-weight: 500;
+            margin-top: 14px;
+        }
+
+        .divider-line {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+        }
+        .divider-line::before, .divider-line::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #ebebeb;
+        }
+        .divider-line span {
+            font-size: 0.78rem;
+            color: #aaa;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .patient-link-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            border: 1.5px solid #e2e2e2;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #444;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+        }
+
+        .patient-link-btn:hover {
+            border-color: #e63950;
+            color: #e63950;
+            background: rgba(230,57,80,0.04);
+        }
+
+        .admin-hint {
+            margin-top: 24px;
+            padding: 12px 14px;
+            background: #f8f8f8;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .admin-hint strong { color: #555; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .auth-left { min-height: 240px; flex: none; }
+            .auth-right { width: 100%; padding: 36px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left: Hero Image Panel -->
+    <div class="auth-left">
+        <img class="hero-img" src="/static/blood-drop.jpg" alt="Donate Blood - Save Lives">
+        <div class="auth-left-overlay"></div>
+        <div class="auth-left-content">
+            <div class="brand">
+                <div class="brand-dot"></div>
+                Blood Rescue
+            </div>
+            <h2>Every Drop <span>Saves Lives.</span><br>Be a Hero.</h2>
+            <p>Join thousands of donors connecting patients with life-saving blood in real time.</p>
+            <div class="stats-row">
+                <div class="stat-pill">
+                    <strong>10K+</strong>
+                    <span>Donors</span>
+                </div>
+                <div class="stat-pill">
+                    <strong>98%</strong>
+                    <span>Match Rate</span>
+                </div>
+                <div class="stat-pill">
+                    <strong>24/7</strong>
+                    <span>Support</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Login Form -->
+    <div class="auth-right">
+        <div class="auth-form-wrap">
+
+            <div class="auth-logo">
+                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="18" cy="18" r="18" fill="#fff0f3"/>
+                    <path d="M18 6C18 6 9 15.5 9 21a9 9 0 0018 0C27 15.5 18 6 18 6z" fill="#e63950"/>
+                    <ellipse cx="14" cy="20" rx="2" ry="3" fill="rgba(255,255,255,0.4)"/>
+                </svg>
+                <div class="auth-logo-text">Blood<span>Rescue</span></div>
+            </div>
+
+            <h1>Welcome back</h1>
+            <p class="subtitle">Sign in to your donor account to manage donations.</p>
+
+            <form id="login-form" action="/login" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text" placeholder="Enter your username" autocomplete="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+                </div>
+
+                <button id="login-btn" class="btn-primary" type="submit">Sign In</button>
+
+                {% if error %}
+                <div class="error-msg">⚠ {{ error }}</div>
+                {% endif %}
+            </form>
+
+            <div class="divider-line"><span>or</span></div>
+
+            <a href="/patient-login" class="patient-link-btn">🏥 Patient Portal Login</a>
+
+            <div class="admin-hint">
+                <strong>Admin credentials:</strong> admin / admin<br>
+                Donors: use your registered email &amp; password.
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

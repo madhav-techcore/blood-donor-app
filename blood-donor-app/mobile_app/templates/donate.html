@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Blood Donation - Blood Rescue</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="donate-page">
+<div class="top-nav">
+    <a href="/">Dashboard</a>
+    <a href="/donate">Blood Donation</a>
+    <a href="/blood-needed">Blood Needed</a>
+    <a href="/urgent-blood">Urgent Blood</a>
+    <a href="/logout" class="logout-button">Logout</a>
+</div>
+
+<div class="container">
+    <div class="hero-card">
+        <h1>Donate Blood</h1>
+        <p>Register donors, save donation records, and keep the community healthy.</p>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-card">
+            <h2>Register New Donor</h2>
+            <input id="name" placeholder="Full Name">
+            <input id="phone" placeholder="Phone Number">
+            <input id="email" placeholder="Email Address">
+            <input id="password" type="password" placeholder="Password">
+            <select id="blood_group">
+                <option value="">Select Blood Group</option>
+                <option>A+</option><option>A-</option>
+                <option>B+</option><option>B-</option>
+                <option>AB+</option><option>AB-</option>
+                <option>O+</option><option>O-</option>
+            </select>
+            <input id="address" placeholder="Address">
+            <input id="city" placeholder="City">
+            <div class="location-row">
+                <button type="button" onclick="captureLocation('donor')">Capture Current Location</button>
+            </div>
+            <input id="donor_latitude" type="hidden">
+            <input id="donor_longitude" type="hidden">
+            <button onclick="registerDonor()">Register Donor</button>
+        </div>
+
+        <div class="form-card">
+            <h2>Record Donation</h2>
+            <select id="donor_id">
+                <option value="">Choose donor</option>
+            </select>
+            <input id="amount_ml" type="number" placeholder="Amount (ml)" required>
+            <input id="donation_date" type="date" required>
+            <input id="donation_age" type="number" placeholder="Age" required>
+            <select id="donation_sex" required>
+                <option value="">Select Sex</option>
+                <option>Male</option><option>Female</option><option>Other</option>
+            </select>
+            <select id="donation_group">
+                <option value="">Blood Group</option>
+                <option>A+</option><option>A-</option>
+                <option>B+</option><option>B-</option>
+                <option>AB+</option><option>AB-</option>
+                <option>O+</option><option>O-</option>
+            </select>
+            <input id="donation_city" placeholder="City">
+            <input id="donation_bp" placeholder="Blood Pressure (e.g. 120/80)">
+            <input id="donation_sugar" placeholder="Sugar Level">
+            <textarea id="donation_medical_condition" placeholder="Medical conditions?"></textarea>
+            <textarea id="notes" placeholder="Additional Notes"></textarea>
+            <button onclick="recordDonation()">Save Donation</button>
+        </div>
+    </div>
+
+    <div id="notification-banner" class="notification-banner hidden"></div>
+
+    <div class="record-grid" id="donor-list"></div>
+    <h2>Donation History</h2>
+    <div class="record-grid" id="donation-list"></div>
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>

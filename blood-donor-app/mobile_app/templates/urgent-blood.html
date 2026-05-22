@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Urgent Blood - Blood Rescue</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="urgent-page">
+<div class="top-nav">
+    <a href="/">Dashboard</a>
+    <a href="/donate">Blood Donation</a>
+    <a href="/blood-needed">Blood Needed</a>
+    <a href="/urgent-blood">Urgent Blood</a>
+    <a href="/logout" class="logout-button">Logout</a>
+</div>
+
+<div class="container">
+    <div class="hero-card">
+        <h1>Urgent Blood Request</h1>
+        <p>This section sends notifications to nearby donors in the same blood group and city.</p>
+    </div>
+
+    <div class="form-card">
+        <h2>Urgent Patient Request</h2>
+        <input id="urgent_patient_name" placeholder="Patient Name">
+        <select id="urgent_blood_group">
+            <option value="">Select Blood Group</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+        </select>
+        <input id="urgent_city" placeholder="City">
+        <input id="urgent_hospital" placeholder="Hospital / Location">
+        <div class="location-row">
+            <button type="button" onclick="captureLocation('urgent')">Capture Emergency Location</button>
+        </div>
+        <input id="urgent_latitude" type="hidden">
+        <input id="urgent_longitude" type="hidden">
+        <textarea id="urgent_details" placeholder="Urgent details"></textarea>
+        <button onclick="createUrgentRequest()">Send Urgent Alert</button>
+    </div>
+
+    <div id="urgent-notified-donors" class="record-grid"></div>
+
+    <div id="notification-banner" class="notification-banner hidden"></div>
+
+    <h2>Urgent Requests</h2>
+    <div class="record-grid" id="urgent-list"></div>
+
+    <div class="map-card">
+        <h2>Emergency Location Map</h2>
+        <div id="urgent-map"></div>
+    </div>
+
+    <h2>SMS Log</h2>
+    <div class="record-grid" id="sms-log"></div>
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>

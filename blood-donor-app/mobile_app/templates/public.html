@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blood Rescue - Donate blood and save lives. Register or browse blood requests.">
+    <title>Blood Rescue - Save Lives</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="top-nav">
+    <a href="/public">🩸 Blood Rescue</a>
+    <a href="/public">Home</a>
+    <a href="/login">Donor Login</a>
+    <a href="/patient-login">Patient Portal</a>
+</div>
+
+<div class="container">
+    <div class="hero-card">
+        <h1>Save Lives – Donate Blood</h1>
+        <p>Join our community of blood heroes and connect with patients who urgently need your help. Every drop counts.</p>
+    </div>
+
+    <div class="form-grid">
+        <div class="form-card">
+            <h2>Register as Donor</h2>
+            <input id="reg-name" placeholder="Full Name">
+            <input id="reg-phone" placeholder="Phone Number">
+            <input id="reg-email" placeholder="Email Address">
+            <input id="reg-password" type="password" placeholder="Password">
+            <select id="reg-blood_group">
+                <option value="">Select Blood Group</option>
+                <option>A+</option><option>A-</option>
+                <option>B+</option><option>B-</option>
+                <option>AB+</option><option>AB-</option>
+                <option>O+</option><option>O-</option>
+            </select>
+            <input id="reg-address" placeholder="Address">
+            <input id="reg-city" placeholder="City">
+            <button onclick="registerUser()">Register as Donor</button>
+        </div>
+
+        <div class="form-card">
+            <h2>Active Blood Requests</h2>
+            <div id="requests-list"></div>
+        </div>
+    </div>
+
+    <div id="notification-banner" class="notification-banner hidden"></div>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

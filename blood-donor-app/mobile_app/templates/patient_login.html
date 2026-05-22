@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Patient Portal - Blood Rescue App. Login or register to find nearby blood donors.">
+    <title>Patient Portal - Blood Rescue App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #0d0d0d;
+            animation: none;
+        }
+        body::before, body::after { display: none; }
+
+        /* ── Left panel ── */
+        .auth-left {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .auth-left img.hero-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .auth-left-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(10,0,0,0.15) 0%,
+                rgba(139,0,0,0.45) 65%,
+                rgba(80,0,0,0.92) 100%
+            );
+        }
+
+        .auth-left-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+            padding: 40px 36px;
+        }
+
+        .auth-left-content .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 18px;
+        }
+
+        .brand-dot {
+            width: 10px; height: 10px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%,100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.6; }
+        }
+
+        .auth-left-content h2 {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .auth-left-content h2 span { color: #ff6b8a; }
+
+        .auth-left-content p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.6;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 24px;
+            text-align: left;
+            display: inline-block;
+        }
+
+        .feature-list li {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px; height: 20px;
+            background: rgba(255,107,138,0.25);
+            border: 1px solid rgba(255,107,138,0.5);
+            border-radius: 50%;
+            font-size: 0.72rem;
+            color: #ff9ab0;
+            flex-shrink: 0;
+        }
+
+        /* ── Right panel ── */
+        .auth-right {
+            width: min(520px, 100%);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 40px;
+            overflow-y: auto;
+        }
+
+        .auth-form-wrap {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .auth-logo svg { width: 36px; height: 36px; }
+
+        .auth-logo-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .auth-logo-text span { color: #e63950; }
+
+        /* Tabs */
+        .tab-bar {
+            display: flex;
+            border: 1.5px solid #e6e6e6;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+            box-shadow: none;
+        }
+
+        .tab-btn.active {
+            background: #e63950;
+            color: #fff;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #fdf0f2;
+            color: #e63950;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Panels */
+        .tab-panels > div { display: none; }
+        .tab-panels > div.active { display: block; }
+
+        .panel-heading {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 5px;
+            letter-spacing: -0.02em;
+        }
+
+        .panel-sub {
+            font-size: 0.875rem;
+            color: #7a7a7a;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #e2e2e2;
+            border-radius: 11px;
+            font-size: 0.93rem;
+            font-family: 'Inter', sans-serif;
+            color: #111;
+            background: #fafafa;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #e63950;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(230, 57, 80, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 11px;
+            font-size: 0.96rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+            background: linear-gradient(135deg, #e63950 0%, #c0213a 100%);
+            cursor: pointer;
+            margin-top: 6px;
+            letter-spacing: 0.02em;
+            transition: transform 0.18s, box-shadow 0.18s;
+            box-shadow: 0 6px 20px rgba(230, 57, 80, 0.28);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(230, 57, 80, 0.36);
+        }
+
+        .alert-msg {
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 12px;
+        }
+
+        .alert-error {
+            background: rgba(230,57,80,0.08);
+            border: 1px solid rgba(230,57,80,0.3);
+            color: #c0213a;
+        }
+
+        .alert-success {
+            background: rgba(4,120,87,0.07);
+            border: 1px solid rgba(4,120,87,0.25);
+            color: #065f46;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 22px;
+            font-size: 0.85rem;
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: #e63950; }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .auth-left { min-height: 220px; flex: none; }
+            .auth-right { width: 100%; padding: 32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left: Hero Image Panel -->
+    <div class="auth-left">
+        <img class="hero-img" src="/static/blood-drop.jpg" alt="Donate Blood - Save Lives">
+        <div class="auth-left-overlay"></div>
+        <div class="auth-left-content">
+            <div class="brand">
+                <div class="brand-dot"></div>
+                Blood Rescue
+            </div>
+            <h2>Find Donors.<br><span>Save a Life.</span></h2>
+            <p>The fastest way for patients to connect with compatible blood donors nearby.</p>
+            <ul class="feature-list">
+                <li>Instant donor matching by blood type</li>
+                <li>Real-time map of nearby donors</li>
+                <li>Urgent blood request alerts</li>
+                <li>Secure &amp; confidential</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Right: Login / Register Panel -->
+    <div class="auth-right">
+        <div class="auth-form-wrap">
+
+            <div class="auth-logo">
+                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="18" cy="18" r="18" fill="#fff0f3"/>
+                    <path d="M18 6C18 6 9 15.5 9 21a9 9 0 0018 0C27 15.5 18 6 18 6z" fill="#e63950"/>
+                    <ellipse cx="14" cy="20" rx="2" ry="3" fill="rgba(255,255,255,0.4)"/>
+                </svg>
+                <div class="auth-logo-text">Blood<span>Rescue</span> <span style="color:#888;font-weight:400;font-size:0.85rem;">Patient</span></div>
+            </div>
+
+            <!-- Tab Bar -->
+            <div class="tab-bar">
+                <button id="tab-login" class="tab-btn active" onclick="switchTab('login')">Sign In</button>
+                <button id="tab-register" class="tab-btn" onclick="switchTab('register')">Register</button>
+            </div>
+
+            <!-- Panels -->
+            <div class="tab-panels">
+
+                <!-- LOGIN -->
+                <div id="panel-login" class="active">
+                    <h2 class="panel-heading">Patient Login</h2>
+                    <p class="panel-sub">Access your patient dashboard to request blood.</p>
+
+                    <form id="patient-login-form" action="/patient-login" method="post">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pass-login">Password</label>
+                            <input id="pass-login" name="password" type="password" placeholder="Your password" autocomplete="current-password" required>
+                        </div>
+                        <button id="patient-login-btn" class="btn-primary" type="submit">Sign In as Patient</button>
+
+                        {% if login_error %}
+                        <div class="alert-msg alert-error">⚠ {{ login_error }}</div>
+                        {% endif %}
+
+                        {% if signup_success %}
+                        <div class="alert-msg alert-success">✓ {{ signup_success }}</div>
+                        {% endif %}
+                    </form>
+                </div>
+
+                <!-- REGISTER -->
+                <div id="panel-register">
+                    <h2 class="panel-heading">Create Account</h2>
+                    <p class="panel-sub">Register to find blood donors near you instantly.</p>
+
+                    <form id="patient-signup-form" action="/patient-signup" method="post">
+                        <div class="form-group">
+                            <label for="reg-name">Full Name</label>
+                            <input id="reg-name" name="name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-email">Email Address</label>
+                            <input id="reg-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-password">Password</label>
+                            <input id="reg-password" name="password" type="password" placeholder="Create a password" autocomplete="new-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-city">City</label>
+                            <input id="reg-city" name="city" placeholder="Your city" required>
+                        </div>
+                        <button id="patient-register-btn" class="btn-primary" type="submit">Register as Patient</button>
+
+                        {% if signup_error %}
+                        <div class="alert-msg alert-error">⚠ {{ signup_error }}</div>
+                        {% endif %}
+                    </form>
+                </div>
+
+            </div>
+
+            <a href="/login" class="back-link">← Back to Donor / Admin Login</a>
+
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panels > div').forEach(p => p.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('panel-' + tab).classList.add('active');
+        }
+
+        // If there is a signup error or success, auto-switch to the right tab
+        {% if signup_error %}
+        switchTab('register');
+        {% endif %}
+    </script>
+
+</body>
+</html>

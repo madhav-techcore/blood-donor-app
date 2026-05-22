@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Blood Rescue Admin Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="dashboard-page">
+<div class="top-nav">
+    <a href="/">Dashboard</a>
+    <a href="/logout" class="logout-button">Logout</a>
+</div>
+
+<div class="container">
+    <div class="hero-card">
+        <h1>Admin Control Center</h1>
+        <p>Manage donors, patients, and send urgent notifications. Access all features from these tabs.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+        <button id="tab-donors" class="tab-btn active" onclick="switchDashboardTab('donors')">Donors</button>
+        <button id="tab-find-blood" class="tab-btn" onclick="switchDashboardTab('find-blood')">Find Blood</button>
+        <button id="tab-emergency" class="tab-btn" onclick="switchDashboardTab('emergency')">Emergency Blood</button>
+    </div>
+
+    <!-- Tab Panels -->
+    <div class="tab-panels">
+        
+        <!-- Donors Tab -->
+        <div id="panel-donors" class="active">
+            <h2>Donors Management</h2>
+            <div id="stats-cards" class="stats-grid" style="margin-bottom: 24px;"></div>
+            
+            <div class="form-grid" style="margin-bottom: 24px;">
+                <div class="form-card">
+                    <h2>Register New Donor</h2>
+                    <input id="name" placeholder="Full Name" required>
+                    <input id="phone" placeholder="Phone Number" required>
+                    <input id="email" type="email" placeholder="Email Address">
+                    <input id="password" type="password" placeholder="Password">
+                    <select id="blood_group" required>
+                        <option value="">Select Blood Group</option>
+                        <option>A+</option><option>A-</option>
+                        <option>B+</option><option>B-</option>
+                        <option>AB+</option><option>AB-</option>
+                        <option>O+</option><option>O-</option>
+                    </select>
+                    <input id="address" placeholder="Address">
+                    <input id="city" placeholder="City" required>
+                    <div class="location-row">
+                        <button type="button" onclick="captureLocation('donor')">Capture Current Location</button>
+                    </div>
+                    <input id="donor_latitude" type="hidden">
+                    <input id="donor_longitude" type="hidden">
+                    <button onclick="registerDonor()">Register Donor</button>
+                </div>
+
+                <div class="form-card">
+                    <h2>Record Donation</h2>
+                    <select id="donor_id">
+                        <option value="">Choose donor</option>
+                    </select>
+                    <input id="amount_ml" type="number" placeholder="Amount (ml)" required>
+                    <input id="donation_date" type="date" required>
+                    <input id="donation_age" type="number" placeholder="Age" required>
+                    <select id="donation_sex" required>
+                        <option value="">Select Sex</option>
+                        <option>Male</option><option>Female</option><option>Other</option>
+                    </select>
+                    <select id="donation_group">
+                        <option value="">Blood Group</option>
+                        <option>A+</option><option>A-</option>
+                        <option>B+</option><option>B-</option>
+                        <option>AB+</option><option>AB-</option>
+                        <option>O+</option><option>O-</option>
+                    </select>
+                    <input id="donation_city" placeholder="City">
+                    <input id="donation_bp" placeholder="Blood Pressure (e.g. 120/80)">
+                    <input id="donation_sugar" placeholder="Sugar Level">
+                    <textarea id="donation_medical_condition" placeholder="Medical conditions?"></textarea>
+                    <textarea id="notes" placeholder="Additional Notes"></textarea>
+                    <button onclick="recordDonation()">Save Donation</button>
+                </div>
+            </div>
+
+            <div class="record-grid" id="donor-list">
+                <!-- Donor list will populate here -->
+                <p>Loading donors...</p>
+            </div>
+        </div>
+
+        <!-- Find Blood Tab -->
+        <div id="panel-find-blood">
+            <h2>Find Blood / Patient Requests</h2>
+            
+            <div class="form-card" style="margin-bottom: 24px;">
+                <h3>Search Donors</h3>
+                <select id="search_blood_group">
+                    <option value="">Select Blood Group</option>
+                    <option>A+</option><option>A-</option>
+                    <option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option>
+                    <option>O+</option><option>O-</option>
+                </select>
+                <input id="search_city" placeholder="City">
+                <button onclick="searchDonors()">Search</button>
+            </div>
+
+            <h3>Matching Donors / Search Results</h3>
+            <div class="record-grid" id="donor-search-results" style="margin-bottom: 24px;"></div>
+
+            <h3>Patient Requests (Names & Contact)</h3>
+            <div class="record-grid" id="requests-list">
+                <!-- Requests list will populate here -->
+                <p>Loading patient requests...</p>
+            </div>
+        </div>
+
+        <!-- Emergency Blood Tab -->
+        <div id="panel-emergency">
+            <h2>Emergency Blood Alerts</h2>
+            
+            <div class="form-card" style="margin-bottom: 24px;">
+                <h3>Create Urgent Alert</h3>
+                <input id="urgent_patient_name" placeholder="Patient Name" required>
+                <input id="urgent_age" type="number" placeholder="Age" required>
+                <select id="urgent_sex" required>
+                    <option value="">Select Sex</option>
+                    <option>Male</option><option>Female</option><option>Other</option>
+                </select>
+                <select id="urgent_blood_group" required>
+                    <option value="">Select Blood Group</option>
+                    <option>A+</option><option>A-</option>
+                    <option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option>
+                    <option>O+</option><option>O-</option>
+                </select>
+                <input id="urgent_city" placeholder="City" required>
+                <input id="urgent_hospital" placeholder="Hospital / Location" required>
+                <div class="location-row">
+                    <button type="button" onclick="captureLocation('urgent')">Use My Location</button>
+                    <span class="location-note">Helps find nearest donors</span>
+                </div>
+                <input id="urgent_latitude" type="hidden">
+                <input id="urgent_longitude" type="hidden">
+                <textarea id="urgent_details" placeholder="Emergency details / urgency notes"></textarea>
+                <button onclick="createUrgentRequest()">Submit Urgent Request</button>
+            </div>
+
+            <h3>Emergency Blood Requests</h3>
+            <div class="record-grid" id="urgent-list">
+                <!-- Urgent requests list will populate here -->
+                <p>Loading emergency requests...</p>
+            </div>
+            
+            <h3 style="margin-top:24px;">SMS Notification Log</h3>
+            <div class="record-grid" id="sms-log"></div>
+        </div>
+        
+    </div>
+
+    <div class="map-card" style="margin-top: 32px;">
+        <h2>Global Map View</h2>
+        <div id="admin-map"></div>
+    </div>
+
+    <div id="notification-banner" class="notification-banner hidden"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="/static/script.js"></script>
+<script>
+    // Trigger loads for the various lists when on the admin dashboard
+    window.addEventListener('load', () => {
+        loadDonors();
+        loadRequests();
+        loadUrgentRequests();
+        loadSmsLog();
+    });
+</script>
+</body>
+</html>

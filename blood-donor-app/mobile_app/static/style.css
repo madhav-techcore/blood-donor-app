@@ -1,0 +1,507 @@
+/* ========================================
+   Blood Rescue App – Global Stylesheet
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Reset / Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --red:        #e63950;
+    --red-dark:   #c0213a;
+    --red-light:  #fff0f3;
+    --red-glow:   rgba(230,57,80,0.18);
+    --bg:         #fdf4f6;
+    --surface:    #ffffff;
+    --text:       #1a1a1a;
+    --muted:      #6b6b6b;
+    --border:     rgba(34,34,34,0.1);
+    --radius-lg:  22px;
+    --radius-md:  14px;
+    --radius-sm:  10px;
+    --shadow-sm:  0 4px 14px rgba(0,0,0,0.07);
+    --shadow-md:  0 14px 36px rgba(0,0,0,0.10);
+    --shadow-lg:  0 24px 64px rgba(0,0,0,0.13);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    background-color: var(--bg);
+    background-image:
+        radial-gradient(circle at 8% 12%, rgba(230,57,80,0.10) 0%, transparent 28%),
+        radial-gradient(circle at 90% 5%,  rgba(230,57,80,0.07) 0%, transparent 24%),
+        radial-gradient(circle at 50% 95%, rgba(230,57,80,0.06) 0%, transparent 30%);
+    color: var(--text);
+}
+
+/* ── Blood-drop watermark (dashboard pages) ── */
+body.dashboard-page::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url('/static/blood-drop.jpg');
+    background-size: 340px auto;
+    background-repeat: repeat;
+    background-position: center;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Top Navigation ── */
+.top-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(230,57,80,0.12);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(230,57,80,0.07);
+}
+
+.top-nav a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.top-nav a:hover {
+    color: var(--red);
+    background: var(--red-light);
+    transform: translateY(-1px);
+}
+
+.top-nav a:first-child {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--red);
+    background: none;
+    padding-left: 0;
+}
+
+.logout-button {
+    margin-left: auto;
+    background: linear-gradient(135deg, var(--red), var(--red-dark)) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 14px var(--red-glow);
+}
+
+.logout-button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px var(--red-glow) !important;
+    color: #fff !important;
+}
+
+/* ── Main Container ── */
+.container {
+    position: relative;
+    z-index: 1;
+    width: min(1000px, 92%);
+    margin: 32px auto 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ── Hero Card ── */
+.hero-card {
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    border-radius: var(--radius-lg);
+    padding: 36px 40px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(230,57,80,0.35);
+}
+
+.hero-card::before {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 240px;
+    height: 240px;
+    background: url('/static/blood-drop.jpg') center/cover;
+    border-radius: 50%;
+    opacity: 0.15;
+    filter: blur(2px);
+}
+
+.hero-card h1 {
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-card p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.82);
+    max-width: 560px;
+    line-height: 1.65;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Stats Grid ── */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 18px;
+}
+
+.stat-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.22s, box-shadow 0.22s;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--red-dark));
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+.stat-card h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--red);
+    margin-bottom: 6px;
+}
+
+.stat-card p { color: var(--muted); font-size: 0.9rem; font-weight: 500; }
+
+/* ── Form Grid ── */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+/* ── Cards ── */
+.form-card,
+.record-card,
+.map-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.22s, box-shadow 0.22s;
+}
+
+.form-card:hover,
+.record-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.form-card h2,
+.record-card h2,
+.map-card h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 20px;
+}
+
+/* ── Inputs / Selects ── */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: var(--radius-sm);
+    font-size: 0.93rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: #fafafa;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    margin-bottom: 12px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--red);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(230,57,80,0.1);
+}
+
+textarea { min-height: 110px; resize: vertical; margin-bottom: 0; }
+
+/* ── Buttons ── */
+button {
+    width: 100%;
+    padding: 13px 18px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 6px 18px var(--red-glow);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(230,57,80,0.32);
+}
+
+button:active { transform: translateY(0); }
+
+/* ── Card Tag ── */
+.card-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--red);
+    border-radius: 999px;
+    padding: 5px 12px;
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+/* ── Divider ── */
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 18px 0;
+    color: #b0b0b0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #ebebeb;
+}
+
+/* ── Alerts ── */
+.error-text {
+    color: #b91c1c;
+    font-size: 0.87rem;
+    font-weight: 500;
+    background: rgba(185,28,28,0.07);
+    border: 1px solid rgba(185,28,28,0.2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-top: 10px;
+}
+
+.success-text {
+    color: #047857;
+    font-size: 0.87rem;
+    font-weight: 500;
+    background: rgba(4,120,87,0.07);
+    border: 1px solid rgba(4,120,87,0.2);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-top: 10px;
+}
+
+.small-text {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin-top: 12px;
+}
+
+.small-text a { color: var(--red); text-decoration: none; font-weight: 600; }
+.small-text a:hover { text-decoration: underline; }
+
+/* ── Notification Banner ── */
+.notification-banner {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.notification-banner.info    { background: rgba(56,146,255,0.12); color: #1d4ed8; border: 1px solid rgba(56,146,255,0.22); }
+.notification-banner.success { background: rgba(34,197,94,0.12);  color: #166534; border: 1px solid rgba(34,197,94,0.22); }
+.notification-banner.error   { background: rgba(230,57,80,0.10);  color: #9f1239; border: 1px solid rgba(230,57,80,0.22); }
+
+.hidden { display: none; }
+
+/* ── Record Grid ── */
+.record-grid { display: grid; gap: 16px; }
+
+/* ── Map Card ── */
+.map-card { border-radius: var(--radius-lg); overflow: hidden; }
+
+.map-card h2 {
+    color: var(--red-dark);
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+}
+
+#admin-map, #search-map, #urgent-map, #user-map {
+    width: 100%;
+    min-height: 360px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+/* ── Location Row ── */
+.location-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    align-items: center;
+}
+
+.location-row button { width: auto; padding: 11px 18px; }
+
+.location-note { color: var(--muted); font-size: 0.88rem; }
+
+/* ── Urgent Card ── */
+.urgent-card {
+    border: 1.5px solid var(--red);
+    background: rgba(230,57,80,0.04);
+}
+
+/* ── Login Container (login-page class) ── */
+body.login-page {
+    background: #0d0d0d;
+    background-image: none;
+}
+
+body.login-page::after { display: none; }
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0d0d0d;
+}
+
+.login-card {
+    width: min(440px, 90%);
+    padding: 36px;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+}
+
+.login-card h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+    .container { margin: 20px auto 40px; }
+    .hero-card { padding: 26px 22px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .top-nav { padding: 12px 16px; gap: 8px; }
+}
+
+/* ── Tabs ── */
+.tab-bar {
+    display: flex;
+    border: 1.5px solid #e6e6e6;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 28px;
+    background: #fff;
+}
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #999;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+    box-shadow: none;
+    text-align: center;
+}
+.tab-btn.active {
+    background: #e63950;
+    color: #fff;
+    box-shadow: none;
+    transform: none;
+}
+.tab-btn:hover:not(.active) {
+    background: #fdf0f2;
+    color: #e63950;
+    transform: none;
+    box-shadow: none;
+}
+.tab-panels > div { display: none; }
+.tab-panels > div.active { display: block; }
+
+/* ── Phone Call Button ── */
+.btn-call {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #25d366;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s, transform 0.18s;
+}
+.btn-call:hover {
+    background: #1ebc5a;
+    transform: translateY(-2px);
+    color: white;
+}
+

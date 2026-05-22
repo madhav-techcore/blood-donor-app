@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Dashboard - Blood Rescue</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="patient-dashboard-page">
+<div class="top-nav">
+    <a href="/patient-dashboard">Patient Dashboard</a>
+    <a href="/logout" class="logout-button">Logout</a>
+</div>
+
+<div class="container">
+    <div class="hero-card">
+        <h1>Patient Dashboard</h1>
+        <p>Request blood, find donors, or record your donation intent.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+        <button id="tab-donate" class="tab-btn active" onclick="switchDashboardTab('donate')">Donate</button>
+        <button id="tab-find-blood" class="tab-btn" onclick="switchDashboardTab('find-blood')">Find Blood</button>
+        <button id="tab-emergency" class="tab-btn" onclick="switchDashboardTab('emergency')">Emergency Blood</button>
+    </div>
+
+    <!-- Tab Panels -->
+    <div class="tab-panels">
+        
+        <!-- Donate Tab -->
+        <div id="panel-donate" class="active">
+            <div class="form-card">
+                <h2>Record Donation / Register as Donor</h2>
+                <input id="name" placeholder="Full Name" required>
+                <input id="donation_age" type="number" placeholder="Age" required>
+                <select id="donation_sex" required>
+                    <option value="">Select Sex</option>
+                    <option>Male</option><option>Female</option><option>Other</option>
+                </select>
+                <select id="blood_group" required>
+                    <option value="">Select Blood Group</option>
+                    <option>A+</option><option>A-</option>
+                    <option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option>
+                    <option>O+</option><option>O-</option>
+                </select>
+                <input id="phone" placeholder="Phone Number" required>
+                <input id="email" type="email" placeholder="Email (optional)">
+                <input id="password" type="password" placeholder="Set a Password (if creating account)" required>
+                <input id="address" placeholder="Address">
+                <input id="city" placeholder="City" required>
+                <input id="donation_bp" placeholder="Blood Pressure (e.g. 120/80)">
+                <input id="donation_sugar" placeholder="Sugar Level">
+                <textarea id="donation_medical_condition" placeholder="Any medical conditions we should know about?"></textarea>
+                
+                <div style="margin: 10px 0;">
+                    <label><input type="checkbox" id="agree_donate" required> I agree to donate blood</label>
+                </div>
+                
+                <button onclick="registerDonor()">Submit Donor Info</button>
+            </div>
+        </div>
+
+        <!-- Find Blood Tab -->
+        <div id="panel-find-blood">
+            <div class="form-card">
+                <h2>Post Blood Request</h2>
+                <input id="patient_name" placeholder="Patient Name" required>
+                <input id="request_age" type="number" placeholder="Age" required>
+                <select id="request_sex" required>
+                    <option value="">Select Sex</option>
+                    <option>Male</option><option>Female</option><option>Other</option>
+                </select>
+                <select id="request_blood_group" required>
+                    <option value="">Select Blood Group</option>
+                    <option>A+</option><option>A-</option>
+                    <option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option>
+                    <option>O+</option><option>O-</option>
+                </select>
+                <input id="request_city" placeholder="City" required>
+                <input id="hospital" placeholder="Hospital / Location" required>
+                <div class="location-row">
+                    <button type="button" onclick="captureLocation('request')">Use My Location</button>
+                    <span class="location-note">Helps find nearest donors</span>
+                </div>
+                <input id="request_latitude" type="hidden">
+                <input id="request_longitude" type="hidden">
+                <textarea id="details" placeholder="Medical details / urgency notes"></textarea>
+                <button onclick="createPatientBloodRequest()">Post Blood Request</button>
+            </div>
+
+            <div id="patient-notified-donors" class="record-grid"></div>
+
+            <div class="form-card">
+                <h2>Search Donors by Blood Group</h2>
+                <select id="search_blood_group">
+                    <option value="">Select Blood Group</option>
+                    <option>A+</option><option>A-</option>
+                    <option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option>
+                    <option>O+</option><option>O-</option>
+                </select>
+                <input id="search_city" placeholder="City">
+                <div class="location-row">
+                    <button type="button" onclick="captureLocation('patient')">Use My Location</button>
+                    <span class="location-note">This helps pick the nearest match.</span>
+                </div>
+                <input id="patient_latitude" type="hidden">
+                <input id="patient_longitude" type="hidden">
+                <button onclick="searchDonors()">Search Donors</button>
+            </div>
+
+            <h2>Matching Donors</h2>
+            <div class="record-grid" id="donor-search-results"></div>
+        </div>
+
+        <!-- Emergency Blood Tab -->
+        <div id="panel-emergency">
+            <div class="form-card">
+                <h2>Create Urgent Blood Alert</h2>
+                <input id="urgent_patient_name" placeholder="Patient Name" required>
+                <input id="urgent_age" type="number" placeholder="Age" required>
+                <select id="urgent_sex" required>
+                    <option value="">Select Sex</option>
+                    <option>Male</option><option>Female</option><option>Other</option>
+                </select>
+                <select id="urgent_blood_group" required>
+                    <option value="">Select Blood Group</option>
+                    <option>A+</option><option>A-</option>
+                    <option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option>
+                    <option>O+</option><option>O-</option>
+                </select>
+                <input id="urgent_city" placeholder="City" required>
+                <input id="urgent_hospital" placeholder="Hospital / Location" required>
+                <div class="location-row">
+                    <button type="button" onclick="captureLocation('urgent')">Use My Location</button>
+                    <span class="location-note">Helps find nearest donors</span>
+                </div>
+                <input id="urgent_latitude" type="hidden">
+                <input id="urgent_longitude" type="hidden">
+                <textarea id="urgent_details" placeholder="Emergency details / urgency notes"></textarea>
+                <button onclick="createUrgentRequest()">Submit Urgent Request</button>
+            </div>
+            
+            <div id="urgent-notified-donors" class="record-grid"></div>
+
+            <div class="map-card" style="margin-top: 24px;">
+                <h2>Nearest Donors Map</h2>
+                <div id="patient-map"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- History Section -->
+    <div style="margin-top: 40px;">
+        <h2>Patient Request History</h2>
+        <div class="record-grid" id="patient-history-list">
+            <!-- Patient history will populate here -->
+            <p>Loading your history...</p>
+        </div>
+    </div>
+
+    <div id="notification-banner" class="notification-banner hidden"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>

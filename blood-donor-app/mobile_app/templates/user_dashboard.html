@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Donor Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="donor-dashboard-page">
+<div class="top-nav">
+    <a href="/user-dashboard">Dashboard</a>
+    <a href="/logout">Logout</a>
+</div>
+
+<div class="container">
+    <div class="hero-card">
+        <h1>Welcome, Donor</h1>
+        <p>View blood requests and stay updated.</p>
+    </div>
+
+    <div class="record-grid" id="requests-list"></div>
+
+    <div class="map-card">
+        <h2>Nearby Requests Map</h2>
+        <div id="user-map"></div>
+    </div>
+
+    <div id="notification-banner" class="notification-banner hidden"></div>
+</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="/static/script.js"></script>
+</body>
+</html>
