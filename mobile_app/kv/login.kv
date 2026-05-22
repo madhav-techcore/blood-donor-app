@@ -1,0 +1,28 @@
+<LoginScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: "Login"
+            font_size: 32
+
+        TextInput:
+            id: email
+            hint_text: "Email"
+            multiline: False
+
+        TextInput:
+            id: password
+            hint_text: "Password"
+            password: True
+            multiline: False
+
+        Button:
+            text: "Sign In"
+            on_release: root.do_login()
+
+        Button:
+            text: "Create Account"
+            on_release: app.root.current = "register"

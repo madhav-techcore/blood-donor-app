@@ -1,0 +1,17 @@
+<DonorScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: "Donor Dashboard"
+            font_size: 32
+
+        Button:
+            text: "Request Donation"
+            on_release: root.submit_donation()
+
+        Button:
+            text: "Log Out"
+            on_release: app.root.current = "login"

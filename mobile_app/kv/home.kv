@@ -1,0 +1,32 @@
+<RegisterScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            text: "Register"
+            font_size: 32
+
+        TextInput:
+            id: name
+            hint_text: "Full Name"
+            multiline: False
+
+        TextInput:
+            id: email
+            hint_text: "Email"
+            multiline: False
+
+        TextInput:
+            id: phone
+            hint_text: "Phone"
+            multiline: False
+
+        Button:
+            text: "Create Account"
+            on_release: root.do_register()
+
+        Button:
+            text: "Back to Login"
+            on_release: app.root.current = "login"
